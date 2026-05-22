@@ -39,7 +39,6 @@ class PlayerTracksDrawer:
 
         output_video_frames= []
         for frame_num, frame in enumerate(video_frames):
-            frame = frame.copy()
 
             player_dict = tracks[frame_num]
 

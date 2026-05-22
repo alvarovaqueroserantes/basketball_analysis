@@ -28,7 +28,6 @@ class BallTracksDrawer:
         """
         output_video_frames = []
         for frame_num, frame in enumerate(video_frames):
-            frame = frame.copy()
             ball_dict = tracks[frame_num]
 
             # Draw ball 

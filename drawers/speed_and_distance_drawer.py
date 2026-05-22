@@ -8,7 +8,7 @@ class SpeedAndDistanceDrawer():
         total_distances = {}
 
         for frame,player_tracks,player_distance,player_speed in zip(video_frames,player_tracks,player_distances_per_frame,player_speed_per_frame):            
-            output_frame = frame.copy()
+            output_frame = frame
 
             # Get Total Distance
             for player_id, distance in player_distance.items():

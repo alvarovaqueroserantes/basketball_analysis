@@ -35,7 +35,7 @@ class CourtKeypointDrawer:
         
         output_frames = []
         for index,frame in enumerate(frames):
-            annotated_frame = frame.copy()
+            annotated_frame = frame
 
             keypoints = court_keypoints[index]
             # Draw dots

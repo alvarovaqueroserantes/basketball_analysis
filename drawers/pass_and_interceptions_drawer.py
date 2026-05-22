@@ -78,25 +78,28 @@ class PassInterceptionDrawer:
         Returns:
             numpy.ndarray: The frame with the semi-transparent overlay and statistics.
         """
-        # Draw a semi-transparent rectangle
-        overlay = frame.copy()
+        # Draw a semi-transparent rectangle only on the region we need
         font_scale = 0.7
         font_thickness=2
 
         # Overlay Position
-        frame_height, frame_width = overlay.shape[:2]
-        rect_x1 = int(frame_width * 0.16) 
+        frame_height, frame_width = frame.shape[:2]
+        rect_x1 = int(frame_width * 0.16)
         rect_y1 = int(frame_height * 0.75)
-        rect_x2 = int(frame_width * 0.55)  
+        rect_x2 = int(frame_width * 0.55)
         rect_y2 = int(frame_height * 0.90)
         # Text positions
-        text_x = int(frame_width * 0.19)  
-        text_y1 = int(frame_height * 0.80)  
+        text_x = int(frame_width * 0.19)
+        text_y1 = int(frame_height * 0.80)
         text_y2 = int(frame_height * 0.88)
 
-        cv2.rectangle(overlay, (rect_x1, rect_y1), (rect_x2, rect_y2), (255,255,255), -1)
+        # Create a small overlay for the rectangle region to save memory
+        overlay_rect = frame[rect_y1:rect_y2, rect_x1:rect_x2].copy()
+        h_rect = rect_y2 - rect_y1
+        w_rect = rect_x2 - rect_x1
+        cv2.rectangle(overlay_rect, (0, 0), (w_rect, h_rect), (255,255,255), -1)
         alpha = 0.8
-        cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
+        cv2.addWeighted(overlay_rect, alpha, frame[rect_y1:rect_y2, rect_x1:rect_x2], 1 - alpha, 0, frame[rect_y1:rect_y2, rect_x1:rect_x2])
 
         # Get stats until current frame
         passes_till_frame = passes[:frame_num+1]

@@ -38,7 +38,6 @@ class TacticalViewDrawer:
 
         output_video_frames = []
         for frame_idx, frame in enumerate(video_frames):
-            frame = frame.copy()
 
             y1 = self.start_y
             y2 = self.start_y+height
