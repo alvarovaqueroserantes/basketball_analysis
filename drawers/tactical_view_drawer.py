@@ -72,12 +72,28 @@ class TacticalViewDrawer:
                     # Adjust position to overlay coordinates
                     x, y = int(position[0]) + self.start_x, int(position[1]) + self.start_y
                     
-                    # Draw player circle
+                    # Draw player circle (marker only; no numeric label required)
                     player_radius = 8
                     cv2.circle(frame, (x, y), player_radius, color, -1)
                     
-                    # Add player ID
-                    #cv2.putText(frame, str(player_id), (x-4, y+4), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1)
+                    # Optionally show player ID if available - currently omitted for label-less markers
+
+                # Draw short trail (past positions) for each player if tactical positions available
+                trail_length = 10
+                for player_id in frame_positions.keys():
+                    points = []
+                    start_idx = max(0, frame_idx - trail_length + 1)
+                    for past_idx in range(start_idx, frame_idx + 1):
+                        if past_idx < len(tactical_player_positions):
+                            past_frame_positions = tactical_player_positions[past_idx]
+                            if player_id in past_frame_positions:
+                                px, py = past_frame_positions[player_id]
+                                points.append((int(px) + self.start_x, int(py) + self.start_y))
+
+                    if len(points) >= 2:
+                        # Color the trail slightly darker for visibility
+                        trail_color = tuple(max(0, c - 40) for c in color)
+                        cv2.polylines(frame, [np.array(points, dtype=int)], False, trail_color, 2)
                     
                     # Highlight player with ball
                     if player_id == player_with_ball:
