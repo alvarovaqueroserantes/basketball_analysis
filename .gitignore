@@ -2,3 +2,7 @@ __pycache__/
 *.pt
 *.avi
 *.pkl
+models/
+.venv
+input_videos/
+output_videos/
